@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+
+<record id="school_management_view_form" model="ir.ui.view">
+   <field name="name">student.view.form</field>
+   <field name="model">student.student</field>
+   <field name="arch" type="xml">
+        <form string="School">
+            <header>       
+                <button class='oe_highlight' state='in_progress' string="Confirm Done Pakka" 
+                name="change_status_button" type="object" 
+                attrs="{'invisible': [('state','=', 'done')] }"/>/>
+                <field name="state" widget="statusbar" statusbar_visible="in_progress,done"/>
+            </header>
+            <sheet>
+               <group string="School Management">
+                   <group>
+                       <field name="name"/>
+                       <field name="marks"/>
+                                <button string='Action Btn' name="%(bi_school_management.action_school_management)d" type="action" >
+                                </button>
+                   </group>
+               </group>
+               <notebook>
+                        <page string="Child Data">
+                            <field name="child_connection_ids"> 
+                                <tree editable='true'>
+                                    <!-- <field name="state" invisible="1"/> -->
+                                    <field name="sale_order_id" attrs="{'readonly': [('parent.state','=', 'done')]}"/>
+                                    <field name="date"/>
+                                </tree>
+                            </field>
+                        </page>
+                </notebook>
+            </sheet>
+        </form>
+    </field>
+    </record>
+    <record id="view_sales_order_inherit" model="ir.ui.view">
+            <field name="name">sale.order.form.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="before">
+                  <field name="class_division"></field>
+                </xpath>
+            </field>
+    </record>
+
+    <record id="view_sales_order_line_inherit" model="ir.ui.view">
+            <field name="name">sale.order.tree</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='activity_ids']" position="after">
+                  <field name="class_division"></field>
+                </xpath>
+            </field>
+    </record>
+
+
+
+    <record id="view_sales_order_line_inherit_dash" model="ir.ui.view">
+            <field name="name">sale.order.form.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='order_line']/tree/field[@name='qty_invoiced']" position="before">
+                  <field name="sub_mark"></field>
+                </xpath>
+            </field>
+    </record>
+
+    
+
+
+    <!--School Management Action-->
+      <record id="action_school_management" model="ir.actions.act_window">
+        <field name="name">School Management</field>
+        <field name="res_model">student.student</field>
+       <field name="view_mode">tree,form</field>
+       <field name="help" type="html">
+         <p class="o_view_nocontent_smiling_face">
+           Create Student Record
+         </p>
+      </field>
+    </record>
+    <!--Parent Menu School Management-->
+    <menuitem id="school_management_menu_root"
+         name="School Management"
+    />
+     <!--Menu School Management-->
+     <menuitem id="school_management_menu"
+         name="School"
+         parent="school_management_menu_root"
+         action="action_school_management"
+     />
+</odoo>
