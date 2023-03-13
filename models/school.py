@@ -100,7 +100,13 @@ class SaleOrder(models.Model):
 
     class_division = fields.Char(string='Class Division')
 
-    
+    def action_confirm(self):
+        student_id = self.env['student.student'].search([('name','=','Safwanb')])
+        res = super(SaleOrder, self).action_confirm()
+        student_id.write({
+            'marks': student_id.marks + 10
+         })
+        return res
 
 
 class SaleOrderLine(models.Model):
